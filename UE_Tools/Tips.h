@@ -1,6 +1,6 @@
 //UE_LogToFile:
   UFUNCTION(BlueprintCallable)
-  static void LogFile(FString _filePath, FString _Text, bool& sussess)
+  static void LogToFile(FString _filePath, FString _Text, bool& sussess)
   {
       IDesktopPlatform* DesktopPlatform = FDesktopPlatformModule::Get();
       //bool bSuccess = DesktopPlatform->OpenFileDialog(nullptr,TEXT("打开文件"))
