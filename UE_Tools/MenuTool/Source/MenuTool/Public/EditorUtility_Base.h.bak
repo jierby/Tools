@@ -1,0 +1,79 @@
+// Fill out your copyright notice in the Description page of Project Settings.
+
+#pragma once
+
+#include "CoreMinimal.h"
+#include "EditorUtilityWidget.h"
+
+class UAnimBlueprint;
+// #include "Editor/UnrealEd/Public/EditorDelegates.h"/**/
+
+#include "EditorUtility_Base.generated.h"
+
+/**
+ * 
+ */
+UCLASS()
+class MENUTOOL_API UEditorUtility_Base : public UEditorUtilityWidget
+{
+	GENERATED_BODY()
+public:
+#if WITH_EDITOR
+	UFUNCTION(BlueprintCallable, Category = "ActorDeletedBegin")
+	void RegisterOnDeleteActorsBegin()
+	{
+		FEditorDelegates::OnDeleteActorsBegin.AddUObject(this, &UEditorUtility_Base::OnDeleteActorsBeginHandler);
+		FEditorDelegates::OnDeleteActorsEnd.AddUObject(this, &UEditorUtility_Base::OnDeleteActorsEndHandler);
+	};
+	UFUNCTION(BlueprintCallable,BlueprintImplementableEvent,Category="ActorDeletedBegin")
+	void OnDeleteActorsBeginHandler();
+	UFUNCTION(BlueprintCallable,BlueprintImplementableEvent,Category="ActorDeletedBegin")
+	void OnDeleteActorsEndHandler();
+	UFUNCTION(BlueprintCallable, Category="User Interface")
+	void InitEditorWidget_CPP(); 
+	UFUNCTION(BlueprintCallable, Category="User Interface")
+	void UpdateAnimBlueprint_CPP();
+
+	UFUNCTION(BlueprintCallable, Category="User Interface" )
+	void SetSelectedActor_CPP(AActor*Selected);
+	UFUNCTION(BlueprintCallable, Category="User Interface" )
+	void CreateActor_CPP(AActor*Selected,UClass*&New_BodyClass);
+	UFUNCTION(BlueprintCallable, Category="User Interface")
+	void OnValueChanged_CPP(FString Section, double Value);
+	UFUNCTION(BlueprintCallable, Category = "User Interface")
+	void ChangePose_CPP( int Index);
+
+	UFUNCTION(BlueprintCallable, Category = "User Interface")
+	void SelectActorInEditor(AActor* ActorToSelect);
+
+	void RefreshComponents();
+	void ResetComponents();
+	
+	UPROPERTY(BlueprintReadWrite)
+	UClass* BlueprintClassObj;
+	// UPROPERTY()
+	// UClass* BlueprintClassCharacter;
+	UPROPERTY(BlueprintReadWrite)
+	UClass* FaceAnimBlueprintClass;
+	// UPROPERTY(BlueprintReadWrite)
+	// UAnimBlueprint* AnimBlueprint;
+
+	UClass* ChangeClass;
+	UPROPERTY(BlueprintReadWrite)
+	USkeletalMeshComponent* BodySketal;
+	UPROPERTY(BlueprintReadWrite)
+	USkeletalMeshComponent* FaceSketal;
+	UPROPERTY(BlueprintReadWrite)
+	UAnimControlComponent* AnimControl;
+	UPROPERTY(BlueprintReadWrite)
+	AActor* SelectedActor_CPP;
+	FTimerHandle handle;
+
+
+	
+	
+#endif
+};
+
+
+
