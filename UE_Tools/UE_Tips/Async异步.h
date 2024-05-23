@@ -17,6 +17,7 @@ public:
 	{
 		for (int i = 0; i < 10000; ++i)
 		{
+			//锁
 			FScopeLock Lock(&CriticalSection);
 			Result += i;
 			UE_LOG(LogTemp, Warning, TEXT("+++ %d"), Result);
@@ -41,6 +42,7 @@ public:
 	{
 		for (int i = 0; i < 10000; ++i)
 		{
+			//锁
 			FScopeLock Lock(&CriticalSection);
 			Result -= i;
 			UE_LOG(LogTemp, Warning, TEXT("---  %d"), Result);
@@ -58,9 +60,9 @@ class TEST_API AMyQueue : public AActor
 	GENERATED_BODY()
 
 public:
-	static FCriticalSection CriticalSection;
-	// Sets default values for this character's properties
-	static AMyQueue* Myqueue;
+	//锁
+	static FCriticalSection CriticalSection;//在CPP中初始化：FCriticalSection AMyQueue::CriticalSection;
+	static AMyQueue* Myqueue;//在CPP中初始化：AMyQueue* AMyQueue::Myqueue = nullptr;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 		int a = 9;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
@@ -78,7 +80,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void StartTask1() 
 	{
+		//创建任务
 		FAutoDeleteAsyncTask<Add_Test>* AddAsyncTask = new FAutoDeleteAsyncTask<Add_Test>(Result, CriticalSection);
+		//开始任务
 		AddAsyncTask->StartBackgroundTask();
 
 	}
